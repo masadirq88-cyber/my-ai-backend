@@ -1,0 +1,20 @@
+2026-08-28 05:51:13,417 - [SECURITY_AUDIT] - المدير التنفيذي Master_CEO متصل الآن بالمعرف 534db06ed86b408d
+2026-08-28 05:51:13,418 - [SECURITY_AUDIT] - تم إنشاء وكيل جديد: Tech_Lead | التخصص: Software Architecture
+2026-08-28 05:51:13,418 - [SECURITY_AUDIT] - تم إنشاء وكيل جديد: Finance_Expert | التخصص: Financial Risk Analysis
+2026-08-28 05:51:13,418 - [SECURITY_AUDIT] - تفويض مهمة لـ Tech_Lead: حلل ثغرات النظام الحالية...
+2026-08-28 06:13:37,036 - [SECURITY_AUDIT] - المدير التنفيذي Master_CEO متصل الآن بالمعرف 534db06ed86b408d
+2026-08-28 06:13:37,037 - [SECURITY_AUDIT] - تم إنشاء وكيل جديد: Tech_Lead | التخصص: Software Architecture
+2026-08-28 06:13:37,037 - [SECURITY_AUDIT] - تم إنشاء وكيل جديد: Finance_Expert | التخصص: Financial Risk Analysis
+2026-08-28 06:13:37,037 - [SECURITY_AUDIT] - تفويض مهمة لـ Tech_Lead: حلل ثغرات النظام الحالية...
+2026-08-28 06:24:07,578 - [SECURITY_AUDIT] - المدير التنفيذي Master_CEO متصل المعرف 534db06ed86b408d
+2026-08-28 06:24:07,578 - [SECURITY_AUDIT] - تم إنشاء وكيل: Dev_Agent | المحرك المفضل: gemini
+2026-08-28 06:24:07,829 - [SECURITY_AUDIT] - AFC is enabled with max remote calls: 10.
+2026-08-28 06:24:07,829 - [SECURITY_AUDIT] - Direct use of automatic function calling (AFC) in Models.generate_content is not recommended. Instead, we recommend to use AFC in Chat.send_message. Similarly, direct use of AFC in Models.generate_content_stream is not recommended. Instead, we recommend to use AFC in Chat.send_message_stream.
+2026-08-28 06:24:09,102 - [SECURITY_AUDIT] - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent "HTTP/1.1 404 Not Found"
+2026-08-28 06:24:09,103 - [SECURITY_AUDIT] - فشل المحرك gemini: Error calling model 'gemini-1.5-pro' (NOT_FOUND): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'models/gemini-1.5-pro is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.', 'status': 'NOT_FOUND'}}
+2026-08-28 06:31:14,374 - [SECURITY_AUDIT] - المدير التنفيذي Master_CEO متصل المعرف 534db06ed86b408d
+2026-08-28 06:31:14,374 - [SECURITY_AUDIT] - تم إنشاء وكيل: Dev_Agent | المحرك المفضل: gemini
+2026-08-28 06:31:14,586 - [SECURITY_AUDIT] - AFC is enabled with max remote calls: 10.
+2026-08-28 06:31:14,586 - [SECURITY_AUDIT] - Direct use of automatic function calling (AFC) in Models.generate_content is not recommended. Instead, we recommend to use AFC in Chat.send_message. Similarly, direct use of AFC in Models.generate_content_stream is not recommended. Instead, we recommend to use AFC in Chat.send_message_stream.
+2026-08-28 06:31:15,697 - [SECURITY_AUDIT] - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent "HTTP/1.1 404 Not Found"
+2026-08-28 06:31:15,699 - [SECURITY_AUDIT] - فشل المحرك gemini: Error calling model 'gemini-1.5-flash' (NOT_FOUND): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.', 'status': 'NOT_FOUND'}}
