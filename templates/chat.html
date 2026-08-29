@@ -1,17 +1,50 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta charset="UTF-8"><title>شات</title></head>
-<body style="font-family:Tahoma; padding:50px;">
-    <h3>مرحباً، {{ username }}</h3>
-    <a href="/logout">تسجيل خروج</a>
-    <hr>
-    <div>
-        <p><b>أنت:</b> {{ request.form.message }}</p>
-        <p><b>البوت:</b> {{ response }}</p>
+<head>
+    <meta charset="UTF-8">
+    <title>شات الذكاء الاصطناعي</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: Tahoma, sans-serif; background: #f0f2f5; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        .chat-header { background: #007bff; color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: 
+center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; max-width: 900px; 
+width: 100%; margin: 0 auto; }
+        .message { padding: 12px 18px; border-radius: 12px; max-width: 75%; word-wrap: break-word; line-height: 1.5; font-size: 15px; }
+        .user-msg { background: #dcf8c6; align-self: flex-start; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .bot-msg { background: #ffffff; border: 1px solid #e1e4e8; align-self: flex-end; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .chat-input-area { background: white; padding: 15px; border-top: 1px solid #ddd; display: flex; justify-content: center; }
+        .chat-form { display: flex; max-width: 900px; width: 100%; gap: 10px; }
+        .chat-form input { flex: 1; padding: 12px 15px; border: 1px solid #ccc; border-radius: 8px; outline: none; font-size: 15px; }
+        .chat-form button { background: #007bff; color: white; border: none; padding: 0 25px; border-radius: 8px; cursor: pointer; 
+font-size: 15px; font-weight: bold; }
+        .chat-form button:hover { background: #0056b3; }
+        .logout-btn { color: white; text-decoration: none; font-size: 14px; background: #dc3545; padding: 6px 14px; border-radius: 6px; }
+        .logout-btn:hover { background: #b02a37; }
+    </style>
+</head>
+<body>
+    <div class="chat-header">
+        <span>مرحباً، <b>{{ username }}</b></span>
+        <a href="/logout" class="logout-btn">تسجيل خروج</a>
     </div>
-    <form method="POST">
-        <input type="text" name="message" placeholder="اكتب رسالتك..." required>
-        <button type="submit">إرسال</button>
-    </form>
+
+    <div class="chat-messages">
+        <div class="message bot-msg">أهلاً بك! أنا وكيلك الذكي، كيف يمكنني مساعدتك اليوم؟</div>
+        {% if response %}
+            <div class="message user-msg"><b>أنت:</b> {{ user_message }}</div>
+            <div class="message bot-msg"><b>Gemini:</b> {{ response }}</div>
+        {% endif %}
+    </div>
+
+    <div class="chat-input-area">
+        <form class="chat-form" method="POST">
+            <input type="text" name="message" placeholder="اكتب رسالتك هنا..." required autocomplete="off">
+            <button type="submit">إرسال</button>
+        </form>
+    </div>
 </body>
 </html>
+
+
