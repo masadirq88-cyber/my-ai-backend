@@ -1,4 +1,3 @@
-
 import os
 from flask import Flask, render_template, request, redirect, url_for, session
 from google import genai
@@ -11,24 +10,22 @@ client = genai.Client(api_key=GEMINI_API_KEY)
 
 USER_CREDENTIALS = {"admin": "12345"}
 
-# قائمة الوكلاء الذكيين وأدوارهم المتخصصة
 AGENTS = {
     "general": {
         "name": "المساعد العام",
-        "instruction": "أنت مساعد ذكي عام، تتسم بالدقة والسرعة في الإجابة على كافة الأسئلة."
+        "instruction": "You are a general smart assistant, accurate and fast."
     },
     "physio": {
         "name": "خبير العلاج الطبيعي والتأهيل",
-        "instruction": "أنت خبير متخصص في العلاج الطبيعي والتأهيل الحركي والمائي، تقدم نصائح وإرشادات رياضية وعلاجية آمنة للمستخدمين."
+        "instruction": "You are an expert in physical therapy and rehabilitation."
     },
     "accounting": {
         "name": "المحاسب المالي",
-        "instruction": "أنت خبير محاسبي ومالي، تساعد في فهم الفروق بين محاسبة الاستحقاق والمحاسبة النقدية وإدارة الحسابات والتكاليف."
+        "instruction": "You are an accounting and financial expert."
     },
     "crypto": {
         "name": "خبير تداول العملات الرقمية",
-        "instruction": "أنت محلل ومستشار لأسواق العملات الرقمية والتداول، تقدم تحليلات فنية وتوضيحاً لاستراتيجيات إدارة المخاطر وأوامر 
-التداول."
+        "instruction": "You are a cryptocurrency trading and market analysis expert."
     }
 }
 
@@ -48,7 +45,7 @@ def login():
             session['user'] = username
             return redirect(url_for('chat'))
         else:
-            error = 'اسم المستخدم أو كلمة المرور غير صحيحة.'
+            error = 'Invalid username or password.'
     return render_template('login.html', error=error)
 
 @app.route('/chat', methods=['GET', 'POST'])
@@ -65,8 +62,7 @@ def chat():
         agent_info = AGENTS.get(selected_agent, AGENTS['general'])
         
         try:
-            # دمج تعليمات الوكيل مع الرسالة لضمان استجابة متخصصة
-            prompt = f"تعليمات النظام الأساسية لك: {agent_info['instruction']}\n\nسؤال المستخدم: {user_message}"
+            prompt = f"System Instruction: {agent_info['instruction']}\n\nUser Question: {user_message}"
             
             response = client.models.generate_content(
                 model='gemini-2.5-flash',
@@ -74,7 +70,7 @@ def chat():
             )
             bot_response = response.text
         except Exception as e:
-            bot_response = f"عذراً، حدث خطأ في الاتصال: {str(e)}"
+            bot_response = f"Error: {str(e)}"
         
     return render_template('chat.html', username=session['user'], response=bot_response, user_message=user_message, agents=AGENTS, 
 selected_agent=selected_agent)
