@@ -1,14 +1,18 @@
-
+k
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>شات الذكاء الاصطناعي</title>
+    <title>منصة الوكلاء الأذكياء</title>
     <style>
         * { box-sizing: border-box; }
         body { font-family: Tahoma, sans-serif; background: #f0f2f5; margin: 0; display: flex; flex-direction: column; height: 100vh; }
         .chat-header { background: #007bff; color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: 
 center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .agent-selector { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.1); padding: 5px 12px; 
+border-radius: 8px; }
+        .agent-selector select { padding: 6px 10px; border-radius: 6px; border: none; outline: none; font-size: 14px; background: white; 
+color: #333; }
         .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; max-width: 900px; 
 width: 100%; margin: 0 auto; }
         .message { padding: 12px 18px; border-radius: 12px; max-width: 75%; word-wrap: break-word; line-height: 1.5; font-size: 15px; }
@@ -27,24 +31,41 @@ font-size: 15px; font-weight: bold; }
 <body>
     <div class="chat-header">
         <span>مرحباً، <b>{{ username }}</b></span>
+        <div class="agent-selector">
+            <form method="POST" id="agentForm" style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                <label for="agent" style="font-size: 14px;">اختر الوكيل:</label>
+                <select name="agent" id="agent" onchange="this.form.submit()">
+                    {% for key, val in agents.items() %}
+                        <option value="{{ key }}" {% if selected_agent == key %}selected{% endif %}>{{ val.name }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
         <a href="/logout" class="logout-btn">تسجيل خروج</a>
     </div>
 
     <div class="chat-messages">
-        <div class="message bot-msg">أهلاً بك! أنا وكيلك الذكي، كيف يمكنني مساعدتك اليوم؟</div>
+        <div class="message bot-msg">أهلاً بك! لقد اخترت وكيلك المتخصص. كيف يمكنني مساعدتك في مجالي اليوم؟</div>
         {% if response %}
             <div class="message user-msg"><b>أنت:</b> {{ user_message }}</div>
-            <div class="message bot-msg"><b>Gemini:</b> {{ response }}</div>
+            <div class="message bot-msg"><b>الوكيل الذكي:</b> {{ response }}</div>
         {% endif %}
     </div>
 
     <div class="chat-input-area">
         <form class="chat-form" method="POST">
-            <input type="text" name="message" placeholder="اكتب رسالتك هنا..." required autocomplete="off">
+            <!-- نحافظ على الوكيل المختار أثناء إرسال الرسالة -->
+            <input type="hidden" name="agent" value="{{ selected_agent }}">
+            <input type="text" name="message" placeholder="اكتب استفسارك هنا..." required autocomplete="off">
             <button type="submit">إرسال</button>
         </form>
     </div>
 </body>
 </html>
 
+
+
+git add .
+git commit -m "add multi-agents system to the web app"
+git push -u origin main --force
 

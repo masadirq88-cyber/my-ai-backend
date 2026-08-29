@@ -1,3 +1,4 @@
+
 import os
 from flask import Flask, render_template, request, redirect, url_for, session
 from google import genai
@@ -5,11 +6,31 @@ from google import genai
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
-# استبدل هذا بالمفتاح الحقيقي الخاص بـ Gemini API
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 client = genai.Client(api_key=GEMINI_API_KEY)
 
 USER_CREDENTIALS = {"admin": "12345"}
+
+# قائمة الوكلاء الذكيين وأدوارهم المتخصصة
+AGENTS = {
+    "general": {
+        "name": "المساعد العام",
+        "instruction": "أنت مساعد ذكي عام، تتسم بالدقة والسرعة في الإجابة على كافة الأسئلة."
+    },
+    "physio": {
+        "name": "خبير العلاج الطبيعي والتأهيل",
+        "instruction": "أنت خبير متخصص في العلاج الطبيعي والتأهيل الحركي والمائي، تقدم نصائح وإرشادات رياضية وعلاجية آمنة للمستخدمين."
+    },
+    "accounting": {
+        "name": "المحاسب المالي",
+        "instruction": "أنت خبير محاسبي ومالي، تساعد في فهم الفروق بين محاسبة الاستحقاق والمحاسبة النقدية وإدارة الحسابات والتكاليف."
+    },
+    "crypto": {
+        "name": "خبير تداول العملات الرقمية",
+        "instruction": "أنت محلل ومستشار لأسواق العملات الرقمية والتداول، تقدم تحليلات فنية وتوضيحاً لاستراتيجيات إدارة المخاطر وأوامر 
+التداول."
+    }
+}
 
 @app.route('/')
 def home():
@@ -37,18 +58,26 @@ def chat():
     
     bot_response = None
     user_message = None
-    if request.method == 'POST':
+    selected_agent = request.form.get('agent', 'general') if request.method == 'POST' else 'general'
+
+    if request.method == 'POST' and 'message' in request.form and request.form['message'].strip():
         user_message = request.form['message']
+        agent_info = AGENTS.get(selected_agent, AGENTS['general'])
+        
         try:
+            # دمج تعليمات الوكيل مع الرسالة لضمان استجابة متخصصة
+            prompt = f"تعليمات النظام الأساسية لك: {agent_info['instruction']}\n\nسؤال المستخدم: {user_message}"
+            
             response = client.models.generate_content(
                 model='gemini-2.5-flash',
-                contents=user_message,
+                contents=prompt,
             )
             bot_response = response.text
         except Exception as e:
             bot_response = f"عذراً، حدث خطأ في الاتصال: {str(e)}"
         
-    return render_template('chat.html', username=session['user'], response=bot_response, user_message=user_message)
+    return render_template('chat.html', username=session['user'], response=bot_response, user_message=user_message, agents=AGENTS, 
+selected_agent=selected_agent)
 
 @app.route('/logout')
 def logout():
