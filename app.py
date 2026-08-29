@@ -1,10 +1,14 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, session
+from google import genai
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'  # مفتاح سري لجلسات الدخول
+app.secret_key = 'your_secret_key_here'
 
-# بيانات تسجيل الدخول التجريبية (يمكنك تغييرها)
+# استبدل هذا بالمفتاح الحقيقي الخاص بـ Gemini API
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+client = genai.Client(api_key=GEMINI_API_KEY)
+
 USER_CREDENTIALS = {"admin": "12345"}
 
 @app.route('/')
@@ -32,12 +36,19 @@ def chat():
         return redirect(url_for('login'))
     
     bot_response = None
+    user_message = None
     if request.method == 'POST':
         user_message = request.form['message']
-        # هنا يمكنك لاحقاً ربط رسالة المستخدم بنموذج Gemini ليقوم بالرد عليها
-        bot_response = f"أهلاً بك يا {session['user']}! لقد استلمت رسالتك: '{user_message}'"
+        try:
+            response = client.models.generate_content(
+                model='gemini-2.5-flash',
+                contents=user_message,
+            )
+            bot_response = response.text
+        except Exception as e:
+            bot_response = f"عذراً، حدث خطأ في الاتصال: {str(e)}"
         
-    return render_template('chat.html', username=session['user'], response=bot_response)
+    return render_template('chat.html', username=session['user'], response=bot_response, user_message=user_message)
 
 @app.route('/logout')
 def logout():
