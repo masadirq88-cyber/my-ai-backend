@@ -64,8 +64,9 @@ def chat():
         try:
             prompt = f"System Instruction: {agent_info['instruction']}\n\nUser Question: {user_message}"
             
+            # استخدام المبدأ القياسي للنموذج الأحدث المتوافق مع المكتبة
             response = client.models.generate_content(
-                model='gemini-1.5-flash',
+                model='gemini-2.0-flash',
                 contents=prompt,
             )
             bot_response = response.text
